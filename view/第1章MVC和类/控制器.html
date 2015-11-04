@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>控制器</title>
+</head>
+<body>
+	<script type="text/javascript">
+	var Controller = {};
+	//使用匿名函数来封装一个作用域
+	(Controller.uses = function($){
+		var nameClick = function(){};
+		//在页面加载时绑定事件监听
+		$(function(){
+			$("#view .name").click(nameClick);
+		});
+	})(jQuery);
+	</script>
+</body>
+</html>
