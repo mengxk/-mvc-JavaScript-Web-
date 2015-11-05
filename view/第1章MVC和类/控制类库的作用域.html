@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<button id="click">click me</button>
+	<script data-main="../../resource/js/app" src="../../resource/js/lib/require-2.1.11.min.js"></script>
+	<script type="text/javascript">
+	require({
+			baseUrl: "../../resource/js/lib",
+			paths: {
+				app: "../app",
+				jquery: "jquery-1.11.3.min"
+			}
+		},
+		["app/util", "jquery"], 
+		function(util, $){
+			var Button = new util.Class();
+			Button.include({
+				init: function(element){
+					var self = this;
+					this.element = $(element);
+					//代理了这个click函数
+					//$("body").on("click", element,self.proxy(self.click));
+					$("body").on("click", element,self.click.bind(self));
+					//this.element.click(this.proxy(this.click));
+				},
+				click: function(){
+					console.log("click");
+				}
+			});
+			var button = new Button("#click");
+			$("body").on("click", button.element, function(){
+				console.log("click 2");
+			});
+		}
+	);
+	</script>
+</body>
+</html>

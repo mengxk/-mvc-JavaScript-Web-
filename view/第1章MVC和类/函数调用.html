@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<button class="clicky">click me</button>
+	<button class="clicky2">click me 2</button>
+	<script type="text/javascript" src="../../resource/js/lib/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript">
+	(function(){
+		var clicky = {
+			wasClicked: function(){
+				console.log("wasClicked");
+			},
+			addListener: function(){
+				var self = this;
+				$(".clicky").click(function(){
+					self.wasClicked();
+				});
+			}
+		};
+
+		clicky.addListener();
+	})();
+
+	(function(){
+		var proxy = function(func, thisObject){
+			return (function(){
+				return func.apply(thisObject, arguments);
+			});
+		};
+		var clicky = {
+			wasClicked: function(){
+				console.log("wasClicked");
+			},
+			addListener: function(){
+				var self = this;
+				$(".clicky2").click(proxy(this.wasClicked, this));
+				//$(".clicky2").click($.proxy(this.wasClicked, this));
+			}
+		};
+
+		clicky.addListener();
+	})();
+
+	(function(){
+		var App = {
+			log: function(){
+				if(typeof console == "undefined") return;
+
+				//将参数转换为合适的数组
+				var args = jQuery.makeArray(arguments);
+				//var args = Array.prototype.slice.call(arguments);
+				//插入一个新的参数
+				args.unshift("App");
+				//委托给console
+				console.log.apply(console, args);
+			}
+		};
+		App.log(1,2,3);
+	})();
+	</script>
+</body>
+</html>

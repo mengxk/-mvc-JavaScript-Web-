@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script data-main="../resource/js/app" src="../resource/js/lib/require-2.1.11.min.js"></script>
+	<script type="text/javascript">
+	require(["app/util"], function(util){
+		var Person = function(name){
+			this.name = name;
+		};
+		//实例化一个Person
+		var alice = new Person('alice');
+		util.assert(alice instanceof Person);
+	});
+
+	//创建自己的类库模拟
+	var Class = function(){
+		var klass = function(){
+			this.init.apply(this, arguments);
+		};
+		klass.prototype.init = function(){
+			console.log("klass init");
+		};
+		return klass;
+	};
+	var Person = new Class;
+	Person.prototype.init = function(){
+		console.log("Person init");
+	};
+	var person = new Person();
+	</script>
+</body>
+</html>

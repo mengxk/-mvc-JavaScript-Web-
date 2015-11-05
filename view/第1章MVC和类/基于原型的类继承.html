@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script type="text/javascript">
+	var Animal = function(){};
+
+	Animal.prototype.breath = function(){
+		console.log("breath");
+	};
+
+	var Dog = function(){};
+
+	//Dog继承了Animal
+	Dog.prototype = new Animal();
+	Dog.prototype.wag = function(){
+		console.log("wag tail");
+	};
+
+	var dog = new Dog();
+	dog.wag();
+	dog.breath();
+	</script>
+</body>
+</html>

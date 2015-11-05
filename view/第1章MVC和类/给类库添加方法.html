@@ -102,6 +102,25 @@
 			});
 		})();
 
+		(function(){
+			var ORMModule = {
+				save: function(){
+					//共享函数
+					console.log("OMModule save");
+				}
+			};
+			var Person = new Class();
+			var Asset = new Class();
+			Person.include(ORMModule);
+			Asset.include(ORMModule);
+			var person = new Person();
+			person.save();
+			var asset = new Asset();
+			asset.save();
+			Person.extend(ORMModule);
+			Person.save();
+		})();
+
 	})();
 	</script>
 </body>
