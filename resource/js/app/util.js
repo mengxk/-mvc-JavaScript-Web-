@@ -64,8 +64,8 @@ define(function() {
 });
 
 if(!Function.prototype.bind){
-	debugger;
 	Function.prototype.bind = function(obj){
+		debugger;
 		var args = Array.prototype.slice.call(arguments, 1),
 			self = this,
 			nop = function(){},
