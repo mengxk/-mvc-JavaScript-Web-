@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+		#tabsContent div{ display:none;}
+		#tabsContent div.active{ display:block;}
+	</style>
+</head>
+<body>
+	<ul id="tabs">
+		<li data-tab="users">Users</li>
+		<li data-tab="groups">Groups</li>
+	</ul>
+	<div id="tabsContent">
+		<div data-tab="users">users</div>
+		<div data-tab="groups">groups</div>
+	</div>
+	<script data-main="../../resource/js/app" src="../../resource/js/lib/require-2.1.11.min.js"></script>
+	<script type="text/javascript">
+	require({
+			baseUrl: "../../resource/js/lib",
+			paths: {
+				app: "../app",
+				jquery: "jquery-1.11.3.min"
+			}
+		},
+		["app/util", "jquery"],
+		function(util, $){
+			$.fn.tabs = function(control){
+				var element = $(this);
+				control = $(control);
+			};
+
+			$("#tabs").tabs("#tabsContent");
+		}
+	);
+	</script>
+</body>
+</html>
