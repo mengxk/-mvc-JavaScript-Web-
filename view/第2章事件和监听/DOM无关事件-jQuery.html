@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script data-main="../../resource/js/app" src="../../resource/js/lib/require-2.1.11.min.js"></script>
+	<script type="text/javascript">
+	require({
+			baseUrl: "../../resource/js/lib",
+			paths: {
+				app: "../app",
+				jquery: "jquery-1.11.3.min"
+			}
+		},
+		["app/util", "jquery"],
+		function(util, $){
+			(function(){
+				var o = $({});
+				$.subscribe = function(){
+					o.bind.apply(o, arguments);
+				};
+				$.unsubscribe = function(){
+					o.unbind.apply(o, arguments);
+				};
+				$.publish = function(){
+					o.trigger.apply(o, arguments);
+				};
+			})();
+
+			debugger;
+			$.subscribe("/some/topic", function(event, a, b, c){
+				console.log(event.type, a + b + c);
+			});
+			$.publish("/some/topic", "a", "b", "c");
+		}
+	);
+	</script>
+</body>
+</html>
