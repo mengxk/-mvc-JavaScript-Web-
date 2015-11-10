@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script type="text/javascript">
+	(function(){
+		var User = {
+			records: [],
+			fetchRemote: function(){
+				
+			}
+		};
+	})();
+
+	(function(){
+		function User(atts){
+			this.attributes = atts || {};
+		};
+		User.prototype.destory = function(){
+			console.log("destory");
+		};
+
+		User.fetchRemote = function(){
+			console.log("fetchRemote");
+		};
+
+		var user = new User();
+	})();
+	</script>
+</body>
+</html>
