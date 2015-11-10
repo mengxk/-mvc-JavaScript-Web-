@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>原型继承</title>
+</head>
+<body>
+	<script type="text/javascript">
+	if(typeof Object.create !== "function"){
+		Object.create = function(o){
+			function F(){};
+			F.prototype = o;
+			return new F();
+		};
+	}
+	var Model = {
+		inherited: function(){
+			console.log("inherited");
+		},
+		created: function(){
+			console.log("created");
+		},
+		prototype: {
+			init: function(){
+				console.log("init");
+			}
+		},
+		create: function(){
+			var object = Object.create(this);
+			object.parent = this;
+			object.prototype = object.fn = Object.create(this.prototype);
+			object.created();
+			this.inherited(object);
+			return object;
+		},
+		init: function(){
+			var instance = Object.create(this.prototype);
+			instance.parent = this;
+			instance.init.apply(instance, arguments);
+			return instance;
+		}
+	};
+	var Asset = Model.create();
+	var User = Model.create();
+	var user = User.init();
+	</script>
+</body>
+</html>
