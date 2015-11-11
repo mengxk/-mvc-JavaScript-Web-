@@ -88,19 +88,11 @@ define(function() {
 			},
 			extend: function(o) {
 				var extended = o.extended;
-<<<<<<< HEAD
 				jQuery.extend(this.prototype, o);
 				if (extended)
 					extended(this);
-			},
-			includ: function(o) {
-=======
-				jQuery.extend(this, o);
-				if (extended)
-					extended(this);
-			},
+			}
 			include: function(o) {
->>>>>>> origin/master
 				var included = o.included;
 				jQuery.extend(this.prototype, o);
 				if (included)
