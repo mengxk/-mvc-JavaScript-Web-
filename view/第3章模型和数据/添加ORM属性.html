@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script data-main="../../resource/js/app" src="../../resource/js/lib/require-2.1.11.min.js"></script>
+	<script type="text/javascript">
+	require({
+		baseUrl: "../../resource/js/lib",
+		paths: {
+			app: "../app",
+			jquery: "jquery-1.11.3.min"
+		}
+	}, ["app/util", "jquery"],
+	function(util, jQuery) {
+		//添加对象属性
+		jQuery.extend(util.Model, {
+			find: function(){
+				console.log("find");
+			}
+		});
+		//添加实例属性
+		jQuery.extend(util.Model.prototype, {
+			init: function(atts){
+				if(atts){
+					this.load(atts);
+				}
+			},
+			load: function(attributes){
+				for(var name in attributes){
+					this[name] = attributes[name];
+				}
+			}
+		});
+		util.Model.extend({
+			init: function(atts){
+				this.load(atts);
+				console.log("util.Model.init:" + atts);
+			},
+			load: function(attributes){
+				for(var name in attributes){
+					this[name] = attributes[name];
+				}
+				console.log("util.Model.load:" + attributes);
+			}
+		});
+
+		var Asset = util.Model.create();
+		var asset = Asset.init({name: "mxk"});
+
+	}
+);
+	</script>
+</body>
+</html>

@@ -49,9 +49,9 @@ define(function() {
 					inclueded(klass);
 			};
 			//添加一个proxy函数
-			klass.proxy = function(func){
+			klass.proxy = function(func) {
 				var self = this;
-				return (function(){
+				return (function() {
 					return func.apply(self, arguments);
 				});
 			};
@@ -59,21 +59,67 @@ define(function() {
 			klass.fn.proxy = klass.proxy;
 
 			return klass;
+		},
+		Model: {
+			inherited: function() {
+				console.log("inherited");
+			},
+			created: function() {
+				console.log("created");
+			},
+			prototype: {
+				init: function() {
+					console.log("init");
+				}
+			},
+			create: function() {
+				var object = Object.create(this);
+				object.parent = this;
+				object.prototype = object.fn = Object.create(this.prototype);
+				object.created();
+				this.inherited(object);
+				return object;
+			},
+			init: function() {
+				var instance = Object.create(this.prototype);
+				instance.parent = this;
+				instance.init.apply(instance, arguments);
+				return instance;
+			},
+			extend: function(o) {
+				var extended = o.extended;
+				jQuery.extend(this.prototype, o);
+				if (extended)
+					extended(this);
+			},
+			includ: function(o) {
+				var included = o.included;
+				jQuery.extend(this.prototype, o);
+				if (included)
+					included(this);
+			}
 		}
 	}
 });
 
-if(!Function.prototype.bind){
-	Function.prototype.bind = function(obj){
+if (!Function.prototype.bind) {
+	Function.prototype.bind = function(obj) {
 		debugger;
 		var args = Array.prototype.slice.call(arguments, 1),
 			self = this,
-			nop = function(){},
-			bound = function(){
+			nop = function() {},
+			bound = function() {
 				return self.apply(this instanceof nop ? this : (obj || {}), args.concat(Array.prototype.slice.call(arguments)));
 			};
 		nop.prototype = self.prototype;
 		bound.prototype = new nop();
 		return bound;
+	};
+}
+if (typeof Object.create !== "function") {
+	Object.create = function(o) {
+		function F() {};
+		F.prototype = o;
+		return new F();
 	};
 }
