@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script data-main="../../resource/js/app" src="../../resource/js/lib/require-2.1.11.min.js"></script>
+	<script type="text/javascript">
+	require({
+			baseUrl: "../../resource/js/lib",
+			paths: {
+				app: "../app",
+				jquery: "jquery-1.11.3.min"
+			}
+		},
+		["app/util", "jquery"], 
+		function(util, $){
+			(function(exports){
+				var foo = "bar";
+				//将变量暴露出去
+				exports.foo = foo;
+			})(window);
+			console.log(util.assertEqual(foo, "bar"));
+		}
+	);
+	</script>
+	<script type="text/javascript">
+	//添加对象属性
+	Model.extend({
+		find: function(id){
+			return this.records[id] || this.update();
+		}
+	});
+	</script>
+</body>
+</html>
