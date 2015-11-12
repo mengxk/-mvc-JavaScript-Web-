@@ -13,24 +13,49 @@
 				jquery: "jquery-1.11.3.min"
 			}
 		},
-		["app/util", "jquery"], 
-		function(util, $){
-			(function(exports){
-				var foo = "bar";
-				//将变量暴露出去
-				exports.foo = foo;
-			})(window);
-			console.log(util.assertEqual(foo, "bar"));
+		["app/util","app/Model", "jquery"], 
+		function(util,Model, $){
+			//用来保存资源的对象
+			Model.records = {};
+
+			Model.extend({
+				//通过ID查找，找不到则抛出异常
+				find: function(id){
+					return this.records[id] || null;
+				}
+			});
+			Model.include({
+				newRecord: true,
+				create: function(){
+					this.newRecord = false;
+					this.update();
+				},
+				destory: function(){
+					delete this.parent.records[this.id];
+				},
+				update: function(){
+					this.parent.records[this.id] = this;
+				},
+				save:function(id){
+					this.newRecord ? this.create() : this.update();
+				}
+			});	
+			debugger;
+			var Asset = Model.create();
+			var asset = Asset.init();
+			asset.name = "same, same";
+			asset.id = 1;
+			asset.save();
+
+			var asset2 = Asset.init();
+			asset2.name = "but different";
+			asset2.id = 2;
+			asset2.save();
+
+			util.assertEqual(Asset.find(1).name, "same, same");
+			asset2.destory();
 		}
 	);
-	</script>
-	<script type="text/javascript">
-	//添加对象属性
-	Model.extend({
-		find: function(id){
-			return this.records[id] || this.update();
-		}
-	});
 	</script>
 </body>
 </html>

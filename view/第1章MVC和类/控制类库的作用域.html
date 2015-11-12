@@ -14,9 +14,9 @@
 				jquery: "jquery-1.11.3.min"
 			}
 		},
-		["app/util", "jquery"], 
-		function(util, $){
-			var Button = new util.Class();
+		["app/util", "app/Class", "jquery"], 
+		function(util, Class, $){
+			var Button = new Class();
 			Button.include({
 				init: function(element){
 					var self = this;

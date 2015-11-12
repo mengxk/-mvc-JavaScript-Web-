@@ -12,16 +12,16 @@
 			app: "../app",
 			jquery: "jquery-1.11.3.min"
 		}
-	}, ["app/util", "jquery"],
-	function(util, jQuery) {
+	}, ["app/util", "app/Model", "jquery"],
+	function(util, Model, jQuery) {
 		//添加对象属性
-		jQuery.extend(util.Model, {
+		jQuery.extend(Model, {
 			find: function(){
 				console.log("find");
 			}
 		});
 		//添加实例属性
-		jQuery.extend(util.Model.prototype, {
+		jQuery.extend(Model.prototype, {
 			init: function(atts){
 				if(atts){
 					this.load(atts);
@@ -33,20 +33,20 @@
 				}
 			}
 		});
-		util.Model.extend({
+		Model.extend({
 			init: function(atts){
 				this.load(atts);
-				console.log("util.Model.init:" + atts);
+				console.log("Model.init:" + atts);
 			},
 			load: function(attributes){
 				for(var name in attributes){
 					this[name] = attributes[name];
 				}
-				console.log("util.Model.load:" + attributes);
+				console.log("Model.load:" + attributes);
 			}
 		});
 
-		var Asset = util.Model.create();
+		var Asset = Model.create();
 		var asset = Asset.init({name: "mxk"});
 
 	}
