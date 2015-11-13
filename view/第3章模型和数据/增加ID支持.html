@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script data-main="../../resource/js/app" src="../../resource/js/lib/require-2.1.11.min.js"></script>
+	<script type="text/javascript">
+	require({
+			baseUrl: "../../resource/js/lib",
+			paths: {
+				app: "../app",
+				jquery: "jquery-1.11.3.min"
+			}
+		},
+		["app/util","app/Model", "jquery"], 
+		function(util,Model, $){
+			//用来保存资源的对象
+			Model.records = {};
+
+			Model.extend({
+				//通过ID查找，找不到则抛出异常
+				find: function(id){
+					return this.records[id] || null;
+				}
+			});
+			Model.include({
+				newRecord: true,
+				create: function(){
+					this.newRecord = false;
+					this.update();
+				},
+				destory: function(){
+					delete this.parent.records[this.id];
+				},
+				update: function(){
+					this.parent.records[this.id] = this;
+				},
+				save:function(id){
+					this.newRecord ? this.create() : this.update();
+				}
+			});	
+		}
+	);
+	</script>
+</body>
+</html>

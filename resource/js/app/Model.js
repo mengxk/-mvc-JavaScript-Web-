@@ -7,8 +7,22 @@ define(function() {
 			console.log("created");
 		},
 		prototype: {
+			newRecord: true,
 			init: function() {
 				console.log("init");
+			},
+			create: function() {
+				this.newRecord = false;
+				this.update();
+			},
+			destory: function() {
+				delete this.parent.records[this.id];
+			},
+			update: function() {
+				this.parent.records[this.id] = this;
+			},
+			save: function(id) {
+				this.newRecord ? this.create() : this.update();
 			}
 		},
 		create: function() {
@@ -36,6 +50,9 @@ define(function() {
 			jQuery.extend(this.prototype, o);
 			if (included)
 				included(this);
+		},
+		find: function(id){
+			return this.records[id] || null;
 		}
 	}
 });
