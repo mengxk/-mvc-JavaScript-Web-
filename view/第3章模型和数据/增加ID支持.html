@@ -19,27 +19,19 @@
 			Model.records = {};
 
 			Model.extend({
-				//通过ID查找，找不到则抛出异常
-				find: function(id){
-					return this.records[id] || null;
+				create: function(){
+					if(!this.id){
+						this.id = Math.guid();
+					}
+					this.newRecord = false;
+					this.parent.records[this.id] = this;
 				}
 			});
-			Model.include({
-				newRecord: true,
-				create: function(){
-					this.newRecord = false;
-					this.update();
-				},
-				destory: function(){
-					delete this.parent.records[this.id];
-				},
-				update: function(){
-					this.parent.records[this.id] = this;
-				},
-				save:function(id){
-					this.newRecord ? this.create() : this.update();
-				}
-			});	
+
+			var Asset = Model.create();
+			var asset = Asset.init();
+			asset.save();
+			console.log(asset.id);
 		}
 	);
 	</script>
