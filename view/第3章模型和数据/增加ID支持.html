@@ -15,18 +15,9 @@
 		},
 		["app/util","app/Model", "jquery"], 
 		function(util,Model, $){
+			debugger;
 			//用来保存资源的对象
 			Model.records = {};
-
-			Model.extend({
-				create: function(){
-					if(!this.id){
-						this.id = Math.guid();
-					}
-					this.newRecord = false;
-					this.parent.records[this.id] = this;
-				}
-			});
 
 			var Asset = Model.create();
 			var asset = Asset.init();

@@ -13,6 +13,9 @@ define(function() {
 			},
 			create: function() {
 				this.newRecord = false;
+				if (!this.id) {
+					this.id = Math.guid();
+				}
 				this.update();
 			},
 			destory: function() {
@@ -51,7 +54,7 @@ define(function() {
 			if (included)
 				included(this);
 		},
-		find: function(id){
+		find: function(id) {
 			return this.records[id] || null;
 		}
 	}
