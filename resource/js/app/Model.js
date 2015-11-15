@@ -8,8 +8,10 @@ define(function() {
 		},
 		prototype: {
 			newRecord: true,
-			init: function() {
-				console.log("init");
+			init: function(o) {
+				for(var attr in o){
+					this[attr] = o[attr];
+				}
 			},
 			create: function() {
 				this.newRecord = false;
@@ -22,10 +24,13 @@ define(function() {
 				delete this.parent.records[this.id];
 			},
 			update: function() {
-				this.parent.records[this.id] = this;
+				this.parent.records[this.id] = this.dup();
 			},
 			save: function(id) {
 				this.newRecord ? this.create() : this.update();
+			},
+			dup: function(){
+				return jQuery.extend(true, {}, this);
 			}
 		},
 		create: function() {
@@ -55,7 +60,9 @@ define(function() {
 				included(this);
 		},
 		find: function(id) {
-			return this.records[id] || null;
+			var record = this.records[id];
+			if(!record) throw("Unknown record");
+			return record.dup();
 		}
 	}
 });

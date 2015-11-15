@@ -17,11 +17,14 @@
 		function(util,Model, $){
 			//用来保存资源的对象
 			Model.records = {};
-
+			debugger;
 			var Asset = Model.create();
-			var asset = Asset.init();
+			var asset = Asset.init({ name: "foo"});
 			asset.save();
-			console.log(asset.id);
+
+			//正确传入资源
+			util.assertEqual(Asset.find(asset.id).name, "foo");
+			
 		}
 	);
 	</script>
