@@ -4,7 +4,7 @@ define(function() {
 			console.log("inherited");
 		},
 		created: function() {
-			console.log("created");
+			this.records = {};
 		},
 		prototype: {
 			newRecord: true,

@@ -16,13 +16,17 @@
 		["app/util","app/Model", "jquery"], 
 		function(util,Model, $){
 			//用来保存资源的对象
-			Model.records = {};
-			debugger;
 			var Asset = Model.create();
 			var asset = Asset.init({ name: "foo"});
 			asset.save();
 
 			//正确传入资源
+			util.assertEqual(Asset.find(asset.id).name, "foo");
+
+			//更改属性，而没有调用update()
+			asset.name = "wem";
+			debugger;
+			//出问题了
 			util.assertEqual(Asset.find(asset.id).name, "foo");
 			
 		}
