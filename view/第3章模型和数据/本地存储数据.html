@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script type="text/javascript">
+	localStorage.setItem("someData", "dream");
+	console.log(localStorage.getItem("someData"));
+	localStorage.removeItem("someData");
+	console.log(localStorage.getItem("someData"));
+	//清空本地缓存
+	localStorage.clear();
+
+	//存储json数据
+	var object = {some: "object"};
+	localStorage.setItem("seriData", JSON.stringify(object));
+	//读取并将JSON转换为对象
+	var result = JSON.parse(localStorage.getItem("seriData"));
+
+	sessionStorage.setItem("sessionData", "session");
+	console.log(sessionStorage.getItem("sessionData"));
+	</script>
+</body>
+</html>

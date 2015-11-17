@@ -63,6 +63,15 @@ define(function() {
 			var record = this.records[id];
 			if(!record) throw("Unknown record");
 			return record.dup();
+		},
+		populate: function(values){
+			//重置model和records
+			this.records = {};
+			for(var i = 0, il = values.length; i < il; i++){
+				var record = this.init(values[i]);
+				record.newRecord = false;
+				this.records[record.id] = record;
+			}
 		}
 	}
 });
