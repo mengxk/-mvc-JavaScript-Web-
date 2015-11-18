@@ -1,15 +1,16 @@
 define(function() {
 	return {
 		inherited: function() {
-			console.log("inherited");
+			//console.log("inherited");
 		},
 		created: function() {
 			this.records = {};
+			this.attributes = [];
 		},
 		prototype: {
 			newRecord: true,
 			init: function(o) {
-				for(var attr in o){
+				for (var attr in o) {
 					this[attr] = o[attr];
 				}
 			},
@@ -29,8 +30,20 @@ define(function() {
 			save: function(id) {
 				this.newRecord ? this.create() : this.update();
 			},
-			dup: function(){
+			dup: function() {
 				return jQuery.extend(true, {}, this);
+			},
+			attributes: function() {
+				var result = {};
+				for (var i in this.parent.attributes) {
+					var attr = this.parent.attributes[i];
+					result[attr] = this[attr];
+				}
+				result.id = this.id;
+				return result;
+			},
+			toJSON: function() {
+				return (this.attributes());
 			}
 		},
 		create: function() {
@@ -61,16 +74,31 @@ define(function() {
 		},
 		find: function(id) {
 			var record = this.records[id];
-			if(!record) throw("Unknown record");
+			if (!record) throw ("Unknown record");
 			return record.dup();
 		},
-		populate: function(values){
+		populate: function(values) {
 			//重置model和records
 			this.records = {};
-			for(var i = 0, il = values.length; i < il; i++){
+			for (var i = 0, il = values.length; i < il; i++) {
 				var record = this.init(values[i]);
 				record.newRecord = false;
 				this.records[record.id] = record;
+			}
+		},
+		saveLocal: function(name) {
+			localStorage.removeItem(name);
+			//将记录转换为数组
+			var result = [];
+			for (var i in this.records) {
+				result.push(this.records[i]);
+			}
+			localStorage[name] = JSON.stringify(result);
+		},
+		loadLocal: function(name) {
+			if(localStorage[name]){
+				var result = JSON.parse(localStorage[name]);
+				this.populate(result);	
 			}
 		}
 	}

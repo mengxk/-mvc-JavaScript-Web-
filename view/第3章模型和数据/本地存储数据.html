@@ -17,6 +17,7 @@
 	localStorage.setItem("seriData", JSON.stringify(object));
 	//读取并将JSON转换为对象
 	var result = JSON.parse(localStorage.getItem("seriData"));
+	console.log(result);
 
 	sessionStorage.setItem("sessionData", "session");
 	console.log(sessionStorage.getItem("sessionData"));

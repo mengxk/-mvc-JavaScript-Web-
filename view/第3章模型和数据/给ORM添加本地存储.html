@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script data-main="../../resource/js/app" src="../../resource/js/lib/require-2.1.11.min.js"></script>
+	<script type="text/javascript">
+	require({
+		baseUrl: "../../resource/js/lib",
+		paths: {
+			app: "../app",
+			jquery: "jquery-1.11.3.min"
+		}
+	}, ["app/util", "app/Model", "jquery"],
+	function(util, Model, $) {
+		var Asset = Model.create();
+		Asset.attributes = ["name", "ext"];
+		Asset.loadLocal("mxk");
+		var asset = Asset.init({name: "document", ext: ".txt"});
+		asset.save();
+		Asset.saveLocal("mxk");
+		console.log(asset.attributes());
+	});
+	</script>
+</body>
+</html>
