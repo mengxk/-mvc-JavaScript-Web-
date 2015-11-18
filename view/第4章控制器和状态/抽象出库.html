@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script data-main="../../resource/js/app" src="../../resource/js/lib/require-2.1.11.min.js"></script>
+	<script type="text/javascript">
+	require({
+		baseUrl: "../../resource/js/lib",
+		paths: {
+			app: "../app",
+			jquery: "jquery-1.11.3.min"
+		}
+	}, ["app/util", "app/Model", "jquery"],
+	function(util, Model, $) {
+		(function($, exports){
+			var mod = function(includes){
+				if(includes)
+					this.include(includes);
+			};
+			mod.fn = mod.prototype;
+			mod.fn.proxy = function(func){
+				return $.proxy(func, this);
+			};
+			mod.fn.load = function(func){
+				$(this.proxy(func));
+			};
+			mod.fn.include = function(ob){
+				$.extend(this, ob);
+			};
+			exports.Controller = mod;
+		})($, window);
+
+		(function($, Controller){
+			var mod = new Controller();
+			mod.toggleClass = function(e){
+				this.view.toggleClass("over", e.data);
+			};
+			mod.load(function(){
+				this.view = $("#view");
+				this.view.mouseover(this.proxy(this.toggleClass), true);
+				this.view.mouseout(this.proxy(this.toggleClass), false);
+			});
+		})($, window.Controller);
+	});
+	</script>
+</body>
+</html>
