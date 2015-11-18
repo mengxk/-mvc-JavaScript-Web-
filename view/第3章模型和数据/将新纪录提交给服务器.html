@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script data-main="../../resource/js/app" src="../../resource/js/lib/require-2.1.11.min.js"></script>
+	<script type="text/javascript">
+	require({
+		baseUrl: "../../resource/js/lib",
+		paths: {
+			app: "../app",
+			jquery: "jquery-1.11.3.min"
+		}
+	}, ["app/util", "app/Model", "jquery"],
+	function(util, Model, $) {
+		/*$.post("/users", {first_name: "Alex"},function(result){
+			//Ajax Post提交成功
+		});
+
+		$.post("/assets", asset.attributes(), function(){
+			//Ajax Post提交成功
+		});*/
+
+		Model.include({
+			createRemote: function(url, callback){
+				$.post(url, t his.attributes(), callback);
+			},
+			updateRemote: function(url, callback){
+				$.ajax({
+					url: url,
+					data: this.attributes(),
+					success: callback,
+					type: "PUT"
+				});
+			}
+		});
+
+		var Asset = Model.create();
+		Asset.init({name: "json.txt"}).createRemote("/assets");
+	});
+	</script>
+</body>
+</html>
