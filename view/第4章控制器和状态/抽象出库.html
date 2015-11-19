@@ -43,6 +43,9 @@
 				this.view.mouseout(this.proxy(this.toggleClass), false);
 			});
 		})($, window.Controller);
+
+		var mod = new Controller();
+		mod.include(StateMachine);
 	});
 	</script>
 </body>
