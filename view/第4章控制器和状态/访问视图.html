@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8">
+</head>
+<body>
+	<h1>访问视图</h1>
+	<p>一种常见的模式是一个试图对应一个控制器。视图包含一个ID，因此可以很容易的传入控制器。然后在视图之中的元素则使用class而不是id，所以和其他视图中的元素不会产生冲突。</p>
+	<div id="users">
+		<form action="">
+			<input type="search" value="search" />
+		</form>
+	</div>
+	<script data-main="../../resource/js/app" src="../../resource/js/lib/require-2.1.11.min.js"></script>
+	<script type="text/javascript">
+	require({
+		baseUrl: "../../resource/js/lib",
+		paths: {
+			app: "../app",
+			jquery: "jquery-1.11.3.min"
+		}
+	}, ["app/util", "app/Model", "jquery"],
+	function(util, Model, jQuery) {
+		//使用全局对象作为上下文，而不是window对象
+		//用来创建全局对象
+		var exports = this;
+		(function($){
+			var mod = {};
+			mod.create = function(includes){
+				var result = function(){
+					this.init.apply(this, arguments);
+				};
+				result.fn = result.prototype;
+				result.fn.init = function(){
+					console.log("init");
+				};
+				result.proxy = function(func){
+					return $.proxy(func, this);
+				};
+				result.fn.proxy = result.proxy;
+				result.include = function(ob){
+					$.extend(this.fn, ob);
+				};
+				result.extend = function(ob){
+					$.extend(this.ob);
+				};
+				if(includes){
+					result.include(includes);
+				}
+				return result;
+			};
+			exports.Controller = mod;
+		})(jQuery);
+
+		jQuery(function($){
+			exports.SearchView = Controller.create({
+				//选择器到局部变量名的映射
+				elements: {
+					"input[type=search]": "searchInput",
+					"form": "searchForm"
+				},
+				//实例化的调用
+				init: function(element){
+					this.el = $(element);
+					this.refreshElements();
+					this.searchForm.submit(this.proxy(this.search));
+				},
+				search: function(){
+					console.log("Searching:", this.searchInput.val());
+				},
+				//私有
+				$: function(selector){
+					//需要一个el属性，同时传入选择器
+					return $(selector, this.el);
+				},
+				//设置本地变量
+				refreshElements: function(){
+					for(var key in this.elements){
+						this[this.elements[key]] = this.$(key);
+					}
+				}
+			});
+			var $user = new SearchView("#users");
+			console.log($user);
+		});
+	});
+	</script>
+</body>
+</html>
