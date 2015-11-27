@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8">
+</head>
+<body>
+	<h1>委托事件</h1>
+	<p>我们可以将绑定的事件都移除，并通过一个events对象来代理，这个events对象包含事件类型和选择器到回调函数的映射。</p>
+	<div id="users">
+		<form action="www.baidu.com" method="get">
+			<input type="search" value="search" />
+			<input id="btn-search" type="button" value="search" />
+		</form>
+	</div>
+	<script data-main="../../resource/js/app" src="../../resource/js/lib/require-2.1.11.min.js"></script>
+	<script type="text/javascript">
+	require({
+		baseUrl: "../../resource/js/lib",
+		paths: {
+			app: "../app",
+			jquery: "jquery-1.11.3.min"
+		}
+	}, ["app/util", "app/Model", "jquery"],
+	function(util, Model, jQuery) {
+		//使用全局对象作为上下文，而不是window对象
+		//用来创建全局对象
+		var exports = this;
+		(function($){
+			var mod = {};
+			mod.create = function(includes){
+				var result = function(){
+					this.init.apply(this, arguments);
+				};
+				result.fn = result.prototype;
+				result.fn.init = function(){
+					console.log("init");
+				};
+				result.proxy = function(func){
+					return $.proxy(func, this);
+				};
+				result.fn.proxy = result.proxy;
+				result.include = function(ob){
+					$.extend(this.fn, ob);
+				};
+				result.extend = function(ob){
+					$.extend(this.ob);
+				};
+				if(includes){
+					result.include(includes);
+				}
+				return result;
+			};
+			exports.Controller = mod;
+		})(jQuery);
+
+		jQuery(function($){
+			exports.SearchView = Controller.create({
+				events:{
+					"submit form": "search",
+					"click #btn-search": "goSearch"
+				},
+				//选择器到局部变量名的映射
+				elements: {
+					"input[type=search]": "searchInput",
+					"form": "searchForm",
+					"#btn-search": "searchBtn"
+				},
+				//实例化的调用
+				init: function(element){
+					this.el = $(element.el);
+					this.refreshElements();
+					//this.searchForm.submit(this.proxy(this.search));
+					this.delegateEvents();
+				},
+				search: function(){
+					console.log("Searching:", this.searchInput.val());
+					return false;
+				},
+				goSearch: function(){
+					console.log("GoSearch:", this.searchInput.val());
+					return false;
+				},
+				//私有
+				$: function(selector){
+					//需要一个el属性，同时传入选择器
+					return $(selector, this.el);
+				},
+				//设置本地变量
+				refreshElements: function(){
+					for(var key in this.elements){
+						this[this.elements[key]] = this.$(key);
+					}
+				},
+				//私有
+				//根据第1个空格来分割
+				eventSplitter: /^(\w+)\s*(.*)$/,
+				delegateEvents: function(){
+					for(var key in this.events){
+						var methodName = this.events[key];
+						var method = this.proxy(this[methodName]);
+						var match = key.match(this.eventSplitter);
+						var eventName = match[1],
+							selector = match[2];
+						if(selector === ""){
+							this.el.bind(eventName, method);
+						}else{
+							this.el.delegate(selector, eventName, method);
+						}
+					}
+				}
+			});
+			var $user = new SearchView({el: "#users"});
+			$user.searchForm.trigger("submit");
+		});
+	});
+	</script>
+</body>
+</html>
