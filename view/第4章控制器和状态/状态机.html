@@ -22,10 +22,12 @@
 	function(util, Model, $) {
 		var Events = {
 			bind: function(){
+				debugger;
 				if(!this.o) this.o = $({});
 				this.o.bind.apply(this.o, arguments);
 			},
 			trigger: function(){
+				debugger;
 				if(!this.o) this.o = $({});
 				this.o.trigger.apply(this.o, arguments);
 			}
@@ -37,6 +39,7 @@
 		//添加事件绑定或触发行为
 		$.extend(StateMachine.fn, Events);
 		StateMachine.fn.add = function(controller){
+			//多次绑定了事件，触发该事件后会执行多次
 			this.bind("change", function(e, current){
 				debugger;
 				if(controller == current){
@@ -68,12 +71,12 @@
 		};
 
 		//创建一个新的状态机，并添加状态
+		debugger;
 		var sm = new StateMachine();
 		sm.add(con1);
 		sm.add(con2);
 
 		con1.active();
-		con2.active();
 	});
 	</script>
 </body>
