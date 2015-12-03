@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script type="text/javascript" src="../../resource/js/lib/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="../../resource/js/lib/jquery.tmpl.js"></script>
+	<script type="text/x-jquery-tmpl" id="someTemplate">
+		<span>${getName()}</span>
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			var data = {
+				getName: function(){
+					return "Bob";
+				}
+			};
+			var element = $("#someTemplate").tmpl(data);
+			element.appendTo('body');
+		});
+	</script>
+	
+</body>
+</html>
