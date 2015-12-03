@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script data-main="../../resource/js/app" src="../../resource/js/lib/require-2.1.11.min.js"></script>
+	<script type="text/javascript">
+	require({
+		baseUrl: "../../resource/js/lib",
+		paths:{
+			app: "../app",
+			jquery: "jquery-1.11.3.min"
+		}
+	},["app/util", "app/Model", "jquery"],function(util, Model, $){
+		$(document).ready(function(){
+			$(window).bind("hashchange", function(event){
+				console.log("hashchange");
+			});
+		});
+	});
+	</script>
+</body>
+</html>
