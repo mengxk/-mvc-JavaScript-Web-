@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <script type="text/javascript">
+    var addChange = function(ob){
+        ob.change = function(callback){
+            if(callback){
+                this._change = this._change || [];
+                this._change.push(callback);
+            }else{
+                if(this._change){
+                    for(var i = 0, iL = this._change.length; i < iL; i++){
+                        this._change[i].apply(this);
+                    }
+                }
+            }
+        }
+    };
+    var object = {};
+    object.name = "Foo";
+    addChange(object);
+    object.change(function(){
+        console.log("Changed!", this);
+        //这里可以添加更新视图的代码
+    });
+    object.change();
+    object.name = "Bar";
+    object.change();
+    </script>
+</body>
+</html>
