@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script>
+	console.profile();
+	for(var i = 0; i < 100000; i++){
+		document.write(i + "<br />");
+	}
+	console.profileEnd();
+	console.time("timeName");
+	for(var i = 0; i < 100000; i++){
+		document.write(i + "<br />");
+	}
+	console.timeEnd("timeName");
+	</script>
+</body>
+</html>

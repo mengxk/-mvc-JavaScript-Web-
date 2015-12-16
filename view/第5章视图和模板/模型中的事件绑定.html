@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<ul id="users"></ul>
+	<script type="text/javascript" src="../../resource/js/lib/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="../../resource/js/lib/jquery.tmpl.js"></script>
+	<script type="text/x-jquery-tmpl" id="userTmpl">
+		<span>${name}</span>
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			var User = function(name){
+				this.name = name;
+			};
+			User.records = [];
+			User.bind = function(ev, callback){
+				var calls = this._callbacks || (this._callbacks = {});
+				(this._callbacks[ev] || (this._callbacks[ev] = [])).push(callback);
+			};
+			User.trigger = function(ev){
+				var list, calls, i, l;
+				if(!(calls = this._callbacks)) return this;
+				if(!(list = this._callbacks[ev])) return this;
+				$.each(list, function(){
+					debugger;
+					this();
+				});
+			};
+			User.create = function(name){
+				this.records.push(new this(name));
+				this.trigger("change");
+			};
+			User.bind("change", function(){
+				var template = $("#userTmpl").tmpl(User.records);
+				$("#users").empty();
+				$("#users").append(template)
+			});
+			debugger;
+			User.create("Sam Seaborn");
+		});
+	</script>
+	
+</body>
+</html>
